@@ -2,6 +2,8 @@
 pub mod hjiayz_p12;
 #[cfg(feature = "pem")]
 pub mod pem;
+#[cfg(feature = "qthree-p12")]
+pub mod qthree_p12;
 #[cfg(feature = "rustcrypto-pkcs12")]
 pub mod rustcrypto_pkcs12;
 #[cfg(feature = "rustls-pki-types")]

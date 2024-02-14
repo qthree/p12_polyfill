@@ -1,6 +1,6 @@
 [package]
 name = "p12_polyfill"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["qthree <qthree3@gmail.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -12,9 +12,10 @@ categories = ["network-programming", "cryptography"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-default = ["hjiayz-p12"]
+default = ["qthree-p12"]
 hjiayz-p12 = ["p12", "yasna"]
-rustcrypto-pkcs12 = ["pkcs12", "der"]
+qthree-p12 = ["p12_q3", "yasna"] # use temporary fork to work around edge cases
+rustcrypto-pkcs12 = ["pkcs12", "pkcs8", "der", "cms"]
 
 [dependencies]
 # convert p12 to der, to use with rustls
@@ -23,10 +24,14 @@ rustls-pki-types = { version = "1", optional = true}
 # convert p12 to pem, to use with native-tls
 pem = { version = "3", optional = true}
 
-# feature hjiayz-p12
+# feature hjiayz-p12 and qthree-p12
 p12 = { version = "0.6", optional = true }
+p12_q3 = { version = "0.7", optional = true }
 yasna = { version = "0.5", optional = true }
 
 # feature rustcrypto-pkcs12, unimplemented yet!
 pkcs12 = { version = "0.1", optional = true }
+pkcs8 = { version = "0.10", features = ["pkcs5", "getrandom"], optional = true}
+#pkcs5 = {version = "=0.8.0-pre.0", features = ["pbes2", "3des"]}
 der = { version = "0.7", features = ["alloc", "derive", "oid", "pem"], optional = true }
+cms = { version = "0.2", optional = true }

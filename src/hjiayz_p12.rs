@@ -5,6 +5,7 @@ pub enum ParseError {
     ParsePFX(yasna::ASN1Error),
     KeyBags(yasna::ASN1Error),
     CertBags(yasna::ASN1Error),
+    VerifyMac,
 }
 
 impl P12 {
@@ -13,6 +14,10 @@ impl P12 {
         password: &str,
     ) -> Result<P12, ParseError> {
         let pfx = p12::PFX::parse(p12).map_err(ParseError::ParsePFX)?;
+        if !pfx.verify_mac(password) {
+            return Err(ParseError::VerifyMac);
+        }
+
         let key_bags = pfx.key_bags(password).map_err(ParseError::KeyBags)?;
         let cert_bags =
             pfx.cert_bags(password).map_err(ParseError::CertBags)?;

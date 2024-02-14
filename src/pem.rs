@@ -31,11 +31,10 @@ impl P12 {
 
 #[cfg(test)]
 mod tests {
-    use crate::hjiayz_p12::tests::parse;
-
+    #[cfg(feature = "qthree-p12")]
     #[test]
     fn test_parse() {
-        let p12 = parse();
+        let p12 = crate::qthree_p12::tests::parse();
         let pem = p12.into_pem().unwrap();
 
         let key_pem = crate::tests::key_pem();
