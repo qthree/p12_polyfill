@@ -1,6 +1,6 @@
 [package]
 name = "p12_polyfill"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["qthree <qthree3@gmail.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -18,8 +18,11 @@ qthree-p12 = ["p12_q3", "yasna"] # use temporary fork to work around edge cases
 rustcrypto-pkcs12 = ["pkcs12", "pkcs8", "der", "cms"]
 
 [dependencies]
-# convert p12 to der, to use with rustls
+# convert p12 to der, to use with rustls v0.22+
 rustls-pki-types = { version = "1", optional = true}
+
+# convert p12 to der, to use with rustls v0.21
+rustls-21 = { version = "0.21", optional = true, package = "rustls"}
 
 # convert p12 to pem, to use with native-tls
 pem = { version = "3", optional = true}

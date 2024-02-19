@@ -9,6 +9,9 @@ pub mod rustcrypto_pkcs12;
 #[cfg(feature = "rustls-pki-types")]
 pub mod rustls;
 
+#[cfg(feature = "rustls-21")]
+pub mod rustls_21;
+
 #[derive(Debug)]
 pub struct P12 {
     pub key_bags: Vec<Vec<u8>>,
@@ -16,7 +19,11 @@ pub struct P12 {
 }
 
 impl P12 {
-    #[cfg(any(feature = "rustls-pki-types", feature = "pem"))]
+    #[cfg(any(
+        feature = "pem",
+        feature = "rustls-pki-types",
+        feature = "rustls-21",
+    ))]
     fn take_single_key(&mut self) -> Result<Vec<u8>, usize> {
         if self.key_bags.len() != 1 {
             return Err(self.key_bags.len());

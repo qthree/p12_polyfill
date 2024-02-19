@@ -13,7 +13,7 @@ pub struct SingleCert {
 }
 
 impl P12 {
-    /// Can be used with with rustls::ConfigBuilder::with_single_cert
+    /// Can be used with with rustls::ConfigBuilder::with_single_cert or added to RootCertStore for with_root_certificates
     pub fn rustls_single_cert(mut self) -> Result<SingleCert, Error> {
         let single_key = self
             .take_single_key()
