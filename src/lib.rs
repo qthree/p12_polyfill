@@ -35,15 +35,23 @@ impl P12 {
 #[cfg(test)]
 #[allow(dead_code)]
 mod tests {
-    pub fn key_p12() -> Vec<u8> {
-        std::fs::read("tests/examples/key.p12").unwrap()
+    #[derive(Clone, Copy)]
+    pub struct TestKey(&'static str);
+    
+    impl TestKey {
+        pub fn key_p12(&self) -> Vec<u8> {
+            std::fs::read(format!("{}/key.p12", self.0)).unwrap()
+        }
+
+        pub fn key_pem(&self) -> String {
+            std::fs::read_to_string(format!("{}/key.pem", self.0)).unwrap()
+        }
+
+        pub fn cert_pem(&self) -> String {
+            std::fs::read_to_string(format!("{}/cert.pem", self.0)).unwrap()
+        }
     }
 
-    pub fn key_pem() -> String {
-        std::fs::read_to_string("tests/examples/key.pem").unwrap()
-    }
-
-    pub fn cert_pem() -> String {
-        std::fs::read_to_string("tests/examples/cert.pem").unwrap()
-    }
+    pub const PBE: TestKey = TestKey("tests/pbeWithSHA1And40BitRC2-CBC");
+    pub const PBES2: TestKey = TestKey("tests/PBES2");
 }

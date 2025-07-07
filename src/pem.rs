@@ -30,15 +30,16 @@ impl P12 {
 }
 
 #[cfg(test)]
+#[cfg(feature = "qthree-p12")]
 mod tests {
-    #[cfg(feature = "qthree-p12")]
-    #[test]
-    fn test_parse() {
-        let p12 = crate::qthree_p12::tests::parse();
+    use crate::tests::TestKey;
+
+    fn test_parse(test_key: TestKey) {
+        let p12 = crate::qthree_p12::tests::parse(test_key);
         let pem = p12.into_pem().unwrap();
 
-        let key_pem = crate::tests::key_pem();
-        let cert_pem = crate::tests::cert_pem();
+        let key_pem = test_key.key_pem();
+        let cert_pem = test_key.cert_pem();
 
         let normalize = |str: &str| str.trim().replace("\r\n", "\n");
 
@@ -46,5 +47,15 @@ mod tests {
         assert_eq!(normalize(&pem.certs), normalize(&cert_pem));
 
         eprintln!("{pem:?}")
+    }
+    
+    #[test]
+    fn test_parse_pem_pbe() {
+        test_parse(crate::tests::PBE);
+    }
+
+    #[test]
+    fn test_parse_pem_pbes2() {
+        test_parse(crate::tests::PBES2);
     }
 }

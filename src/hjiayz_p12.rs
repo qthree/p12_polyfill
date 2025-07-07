@@ -30,15 +30,22 @@ impl P12 {
 
 #[cfg(test)]
 pub(crate) mod tests {
+    use crate::tests::TestKey;
+
     use super::*;
 
-    pub fn parse() -> P12 {
-        let bytes = crate::tests::key_p12();
+    pub fn parse(test_key: TestKey) -> P12 {
+        let bytes = test_key.key_p12();
         P12::parse_with_p12(&bytes, "").unwrap()
     }
 
     #[test]
-    fn test_parse_with_p12() {
-        eprintln!("{:?}", parse());
+    fn test_parse_pbe_with_p12() {
+        eprintln!("{:?}", parse(crate::tests::PBE));
+    }
+
+    #[test]
+    fn test_parse_pbes2_with_p12() {
+        eprintln!("{:?}", parse(crate::tests::PBES2));
     }
 }
